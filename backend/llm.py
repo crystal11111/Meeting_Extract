@@ -1,9 +1,10 @@
 from langchain.llms import OpenAI
 import os
+from dotenv import load_dotenv 
 
-def summarize_meeting(transcript):
-    llm = OpenAI(api_key= os.getenv("OPEN_API_KEY"))
-    prompt = f"Summarize the following meeting transcript and extract tasks:\n\n{transcript}"
-    summary = llm(prompt)
-    return summary
-     
+class LLMModels:
+    @staticmethod
+    def get_openai_model():
+        load_dotenv()  
+        api_key = os.getenv("OPEN_API_KEY")
+        return OpenAI(api_key= api_key)
