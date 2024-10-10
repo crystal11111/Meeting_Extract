@@ -92,14 +92,6 @@ export const Home = () => {
                 onDragOver={handleDragOver} // Handle drag over event
                 onDrop={handleDrop} // Handle drop event
                 onClick={handleFileInputClick} // Trigger file input on click
-                style={{
-                    border: "2px dashed #ccc",
-                    borderRadius: "5px",
-                    padding: "20px",
-                    textAlign: "center",
-                    margin: "10px 0",
-                    cursor: "pointer", // Change cursor to pointer for better UX
-                }}
             >
                 <input 
                     type="file" 
@@ -116,21 +108,21 @@ export const Home = () => {
             </button>
             {error && <p className="error">{error}</p>}
             {summary && (
-                <div className="summary-output">
+                <div className="output-container">
                     <h3>Summary</h3>
-                    <p>{summary}</p>
+                    <p className="output-text">{summary}</p>
                 </div>
             )}
             {tasks && (
-                <div className="tasks-output">
+                <div className="output-container">
                     <h3>Tasks</h3>
-                    <p>{tasks}</p>
+                    <p className="output-text">{tasks}</p>
                 </div>
             )}
             {followupEmail && (
-                <div className="followup-output">
+                <div className="output-container">
                     <h3>Follow-up Email</h3>
-                    <p>{followupEmail}</p>
+                    <p className="output-text">{followupEmail}</p>
                 </div>
             )}
         </div>
