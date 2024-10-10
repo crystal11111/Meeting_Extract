@@ -23,3 +23,12 @@
     width: 80%;
     margin: auto;
 }
+
+.file-upload {
+    margin: 10px 0;
+}
+
+.file-input {
+    display: block;
+    margin: 10px 0;
+}
