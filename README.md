@@ -34,7 +34,8 @@ The **Meeting Extractor Application** is a web-based tool that allows users to u
 1. Clone the repository:
     ```bash
     git clone https://github.com/yourusername/meeting-extractor.git
-    cd meeting-extractor/backend
+    cd meeting-extractor
+    python3 -m venv venv
     ```
 2. Install dependencies:
     ```bash
@@ -42,6 +43,8 @@ The **Meeting Extractor Application** is a web-based tool that allows users to u
     ```
 3. Start the Flask server:
     ```bash
+    source venv/bin/activate
+    cd backend
     python app.py
     ```
 
