@@ -1,0 +1,10 @@
+{
+  "name": "meeting-extractor-app",
+  "version": "1.0.0",
+  "description": "Meeting Extractor Application - Frontend Only",
+  "scripts": {
+    "dev": "cd meeting-extract && npm start",
+    "build": "cd meeting-extract && npm run build",
+    "deploy": "cd meeting-extract && vercel --prod"
+  }
+}
