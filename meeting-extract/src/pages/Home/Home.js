@@ -10,7 +10,9 @@ export const Home = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
     const [isDragging, setIsDragging] = useState(false);
-    const fileInputRef = useRef(null); // Create a ref for the file input
+    const [copiedSection, setCopiedSection] = useState(null);
+    const [uploadedFileName, setUploadedFileName] = useState("");
+    const fileInputRef = useRef(null);
 
     const handleTranscriptChange = (e) => {
         setTranscript(e.target.value);
@@ -21,6 +23,7 @@ export const Home = () => {
 
         const fileType = file.type;
         setError("");
+        setUploadedFileName(file.name);
 
         try {
             if (fileType === "application/pdf") {
@@ -36,6 +39,7 @@ export const Home = () => {
         } catch (error) {
             console.error("Failed to process file", error);
             setError("Failed to process file. Please try another file.");
+            setUploadedFileName("");
         }
     };
 
@@ -94,10 +98,53 @@ export const Home = () => {
         fileInputRef.current.click(); // Programmatically click the file input
     };
 
+    const getIcon = (title) => {
+        switch (title) {
+            case 'Meeting Summary': return '📋';
+            case 'Action Items': return '✅';
+            case 'Follow-up Email Draft': return '📧';
+            default: return '📄';
+        }
+    };
+
+    const copyToClipboard = async (text, section) => {
+        try {
+            await navigator.clipboard.writeText(text);
+            setCopiedSection(section);
+            setTimeout(() => setCopiedSection(null), 2000);
+        } catch (err) {
+            console.error('Failed to copy text: ', err);
+        }
+    };
+
+    const clearForm = () => {
+        setTranscript("");
+        setSummary("");
+        setTasks("");
+        setFollowupEmail("");
+        setUploadedFileName("");
+        setError("");
+        if (fileInputRef.current) {
+            fileInputRef.current.value = "";
+        }
+    };
+
     const OutputSection = ({ title, content }) => (
         content && (
             <div className="output-container">
-                <h3 className="output-title">{title}</h3>
+                <div className="output-header">
+                    <h3 className="output-title">
+                        <span className="output-icon">{getIcon(title)}</span>
+                        {title}
+                    </h3>
+                    <button 
+                        className={`copy-btn ${copiedSection === title ? 'copied' : ''}`}
+                        onClick={() => copyToClipboard(content, title)}
+                        title="Copy to clipboard"
+                    >
+                        {copiedSection === title ? '✓' : '📋'}
+                    </button>
+                </div>
                 <div className="output-content">
                     <p className="output-text">{content}</p>
                 </div>
@@ -141,28 +188,50 @@ export const Home = () => {
                             ref={fileInputRef}
                         />
                         <div className="upload-content">
-                            <span className="upload-icon">📄</span>
-                            <p>Drag and drop your file here, or click to browse</p>
-                            <p className="file-types">Supported formats: PDF, TXT, DOC, DOCX</p>
+                            <span className="upload-icon">📁</span>
+                            {uploadedFileName ? (
+                                <>
+                                    <p className="uploaded-file">✓ {uploadedFileName}</p>
+                                    <p className="file-types">File uploaded successfully!</p>
+                                </>
+                            ) : (
+                                <>
+                                    <p>Drag and drop your file here, or click to browse</p>
+                                    <p className="file-types">✨ Supported formats: PDF, TXT, DOC, DOCX</p>
+                                </>
+                            )}
                         </div>
                     </div>
 
-                    <button 
-                        onClick={handleSubmit} 
-                        className={`submit-btn ${loading ? 'loading' : ''}`} 
-                        disabled={loading}
-                    >
-                        {loading ? 'Processing...' : 'Generate Summary'}
-                    </button>
+                    <div className="button-group">
+                        <button 
+                            onClick={handleSubmit} 
+                            className={`submit-btn ${loading ? 'loading' : ''}`} 
+                            disabled={loading}
+                        >
+                            {loading ? 'Processing...' : 'Generate Summary'}
+                        </button>
+                        {(transcript || uploadedFileName) && (
+                            <button 
+                                onClick={clearForm}
+                                className="clear-btn"
+                                disabled={loading}
+                            >
+                                🗑️ Clear
+                            </button>
+                        )}
+                    </div>
 
                     {error && <div className="error-message" role="alert">{error}</div>}
                 </div>
 
-                <div className="output-section">
-                    <OutputSection title="Meeting Summary" content={summary} />
-                    <OutputSection title="Action Items" content={tasks} />
-                    <OutputSection title="Follow-up Email Draft" content={followupEmail} />
-                </div>
+                {(summary || tasks || followupEmail) && (
+                    <div className="output-section">
+                        {summary && <OutputSection title="Meeting Summary" content={summary} />}
+                        {tasks && <OutputSection title="Action Items" content={tasks} />}
+                        {followupEmail && <OutputSection title="Follow-up Email Draft" content={followupEmail} />}
+                    </div>
+                )}
             </main>
         </div>
     );
