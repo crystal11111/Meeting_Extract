@@ -57,17 +57,12 @@ The application will be available at `http://localhost:3000`
 
 ## Deployment
 
-### Vercel (Recommended)
+### Vercel
 ```bash
 cd meeting-extract
 npm run build
 npx vercel --prod
 ```
-
-### Other Options
-- **Netlify:** Drag & drop build folder
-- **GitHub Pages:** `npx gh-pages -d build`
-- **Firebase:** `firebase deploy`
 
 ### User API Keys
 - Users provide their own OpenAI API keys
