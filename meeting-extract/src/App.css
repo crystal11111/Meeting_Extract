@@ -4,17 +4,18 @@ html {
 
 .App {
   text-align: center;
+  min-height: 100vh;
 }
 
 section {
-  padding: 100px;
-  min-height: 100vh;  /* Ensures each section takes full view height */
+  padding: 80px 20px;
+  min-height: calc(100vh - 80px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 #home {
-  background-color: #f0f0f0;
-}
-
-#chatbot {
-  background-color: #e0e0e0;
+  background: transparent;
+  padding-top: 100px;
 }
