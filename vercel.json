@@ -1,0 +1,5 @@
+{
+  "buildCommand": "cd meeting-extract && npm install && npm run build",
+  "outputDirectory": "meeting-extract/build",
+  "installCommand": "cd meeting-extract && npm install"
+}
